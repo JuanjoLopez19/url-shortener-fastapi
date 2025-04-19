@@ -11,6 +11,7 @@ from src.app.database.schemas.url import UrlSchema
 
 logger = logging.getLogger(__name__)
 
+# Global state tracker - not reliable in serverless environments between requests
 db_state = {"initialized": False}
 
 
@@ -46,6 +47,20 @@ class MongoDBConnection:
         db_state["initialized"] = True
         logger.info("MongoDB connection initialized")
 
+    async def is_connection_valid(self):
+        """Test if the connection is actually valid"""
+        if not self._initialized or not self._client:
+            return False
+
+        try:
+            await self._client.admin.command("ping")
+            return True
+        except Exception as e:
+            logger.warning(f"MongoDB connection check failed: {str(e)}")
+            self._initialized = False
+            db_state["initialized"] = False
+            return False
+
     @property
     def client(self) -> AsyncIOMotorClient:
         """Get the motor client instance"""
@@ -75,21 +90,35 @@ class MongoDBConnection:
             logger.info("MongoDB connection closed")
 
 
-# Singleton instance that should be used throughout the application
 mongodb = MongoDBConnection()
 
 
-# Helper function for serverless environments
 async def ensure_db_connected():
     """Ensure the database is connected - useful for serverless environments"""
-    if not db_state["initialized"]:
+    if settings.is_vercel or not db_state["initialized"]:
+        if mongodb._initialized:
+            is_valid = await mongodb.is_connection_valid()
+            if is_valid:
+                logger.info("Existing MongoDB connection is valid")
+                return
+            else:
+                logger.info("Existing MongoDB connection is invalid, reconnecting")
+
         try:
             await mongodb.initialize()
         except RuntimeError as re:
             if "Event loop is closed" in str(re):
                 logger.info("Reconnecting due to closed event loop")
-                asyncio.set_event_loop(asyncio.new_event_loop())
-                await mongodb.initialize()
+                try:
+                    # Create a new event loop
+                    loop = asyncio.new_event_loop()
+                    asyncio.set_event_loop(loop)
+                    await mongodb.initialize()
+                except Exception as e:
+                    logger.error(
+                        f"Failed to initialize MongoDB after event loop reset: {str(e)}"
+                    )
+                    raise
             else:
                 logger.error(f"Failed to initialize MongoDB: {str(re)}")
                 raise
