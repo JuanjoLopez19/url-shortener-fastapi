@@ -1,3 +1,6 @@
+import json
+import logging
+import traceback
 from typing import Annotated
 
 from fastapi import APIRouter, Form, Request
@@ -6,6 +9,10 @@ from fastapi.responses import HTMLResponse
 from src.app import settings
 from src.app.api import templates
 from src.app.api.endpoints.controller import shorten_url_controller
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["API"])
 
@@ -41,17 +48,22 @@ async def shorten_url(request: Request, url: Annotated[str, Form()]):
                 {
                     "request": request,
                     "message": "Error al acortar URL",
-                    "error": {"status": 500, "stack": result.error},
+                    "error": {
+                        "status": 500,
+                        "stack": json.dumps({"error": result.error}),
+                    },
                 },
             )
     except Exception as e:
-        print(e)
+        error_details = traceback.format_exc()
+        logger.error(f"Error shortening URL {url}: {str(e)}\n{error_details}")
 
+        # Return detailed error information in the response
         return templates.TemplateResponse(
             "error.html",
             {
                 "request": request,
                 "message": "Error del servidor",
-                "error": {"status": 500, "stack": str(e)},
+                "error": {"status": 500, "stack": error_details},
             },
         )

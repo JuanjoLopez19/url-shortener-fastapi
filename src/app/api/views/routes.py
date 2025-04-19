@@ -1,11 +1,19 @@
 import json
+import logging
+import traceback
 from datetime import date
 
 from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
+from src.app import settings
 from src.app.api import templates
+from src.app.database.mongo import ensure_db_connected, mongodb
 from src.app.database.schemas.url import UrlSchema
+
+# Set up logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["Views"])
 
@@ -24,6 +32,12 @@ async def read_root(
 @router.get("/{token}")
 async def get_url(request: Request, token: str):
     try:
+        # Ensure database is initialized before any operations
+        if settings.is_vercel or not mongodb._initialized:
+            logger.info("Enter into ensure_db_connected")
+            logger.info(f"{settings.is_vercel} || {mongodb._initialized}")
+            await ensure_db_connected()
+
         if not token:
             return templates.TemplateResponse(
                 "error.html",
@@ -37,7 +51,7 @@ async def get_url(request: Request, token: str):
                 },
             )
 
-        url_doc = await UrlSchema.find_one(UrlSchema.shortened == token)
+        url_doc = await UrlSchema.find_one({"shortened": token})
 
         if not url_doc:
             return templates.TemplateResponse(
@@ -60,9 +74,12 @@ async def get_url(request: Request, token: str):
         url_doc.last_accessed = date.today()
         await url_doc.save()
 
+        logger.info(f"Redirecting to: {url_doc.original}")
         return RedirectResponse(url=url_doc.original)
     except Exception as e:
-        print(e)
+        error_details = traceback.format_exc()
+        logger.error(f"Error processing request: {str(e)}\n{error_details}")
+
         return templates.TemplateResponse(
             "error.html",
             context={
@@ -70,7 +87,7 @@ async def get_url(request: Request, token: str):
                 "message": "Error interno del servidor",
                 "error": {
                     "status": 500,
-                    "stack": json.dumps({"message": str(e)}),
+                    "stack": error_details,
                 },
             },
         )

@@ -1,3 +1,5 @@
+import os
+
 from pydantic import Field, computed_field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -12,6 +14,11 @@ class Settings(BaseSettings):
     port: int = Field(..., alias="DATABASE_PORT")
 
     development: bool = Field(False, alias="DEVELOPMENT")
+
+    @computed_field
+    @property
+    def is_vercel(self) -> bool:
+        return os.environ.get("VERCEL") == "1"
 
     @computed_field
     @property
