@@ -1,0 +1,13 @@
+[project]
+name = "url-shortener-fastapi"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Juanjo López", email = "juanjoselopez@usal.es" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi[standard]>=0.115.12",
+    "uvicorn>=0.34.2",
+]

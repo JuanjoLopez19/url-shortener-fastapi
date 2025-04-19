@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>{{ title }}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="apple-touch-icon"
+			sizes="57x57"
+			href="{{ url_for('static', path='/icons/apple-icon-57x57.png') }}"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="60x60"
+			href="{{ url_for('static', path='/icons/apple-icon-60x60.png') }}"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="72x72"
+			href="{{ url_for('static', path='/icons/apple-icon-72x72.png') }}"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="76x76"
+			href="{{ url_for('static', path='/icons/apple-icon-76x76.png') }}"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="114x114"
+			href="{{ url_for('static', path='/icons/apple-icon-114x114.png') }}"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="120x120"
+			href="{{ url_for('static', path='/icons/apple-icon-120x120.png') }}"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="144x144"
+			href="{{ url_for('static', path='/icons/apple-icon-144x144.png') }}"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="152x152"
+			href="{{ url_for('static', path='/icons/apple-icon-152x152.png') }}"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="180x180"
+			href="{{ url_for('static', path='/icons/apple-icon-180x180.png') }}"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="192x192"
+			href="{{ url_for('static', path='/icons/android-icon-192x192.png') }}"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="{{ url_for('static', path='/icons/favicon-32x32.png') }}"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="96x96"
+			href="{{ url_for('static', path='/icons/favicon-96x96.png') }}"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="16x16"
+			href="{{ url_for('static', path='/icons/favicon-16x16.png') }}"
+		/>
+		<link
+			rel="manifest"
+			href="{{ url_for('static', path='/icons/manifest.json') }}"
+		/>
+		<meta name="msapplication-TileColor" content="#ffffff" />
+		<meta
+			name="msapplication-TileImage"
+			content="{{ url_for('static', path='/icons/ms-icon-144x144.png') }}"
+		/>
+		<style>
+			:root {
+				--primary: #4361ee;
+				--secondary: #3f37c9;
+				--light: #f8f9fa;
+				--dark: #212529;
+			}
+
+			body {
+				font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+				background-color: #f0f2f5;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: 100vh;
+				margin: 0;
+				padding: 20px;
+			}
+
+			.container {
+				background-color: white;
+				border-radius: 10px;
+				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+				padding: 30px;
+				width: 100%;
+				max-width: 500px;
+				text-align: center;
+			}
+
+			h1 {
+				color: var(--dark);
+				margin-bottom: 20px;
+			}
+
+			.url-form {
+				margin-top: 30px;
+			}
+
+			.input-group {
+				position: relative;
+				margin-bottom: 25px;
+			}
+
+			.url-input {
+				width: 90%;
+				padding: 10px;
+				border: 2px solid #e0e0e0;
+				border-radius: 5px;
+				font-size: 16px;
+				transition: border-color 0.3s;
+			}
+
+			.url-input:focus {
+				outline: none;
+				border-color: var(--primary);
+			}
+
+			.submit-btn {
+				background-color: var(--primary);
+				color: white;
+				border: none;
+				border-radius: 5px;
+				margin: 12px 25px;
+				font-size: 16px;
+				cursor: pointer;
+				transition: background-color 0.3s;
+			}
+
+			.submit-btn:hover {
+				background-color: var(--secondary);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<h1>{{ title }}</h1>
+			<p>This is your URL Shortened</p>
+
+			<div class="input-group">
+				<input
+					type="url"
+					name="longUrl"
+					class="url-input"
+					value="{{ longUrl }}"
+					required
+					disabled
+				/>
+			</div>
+
+			<div class="input-group">
+				<input
+					type="url"
+					name="shortUrl"
+					id="shortUrl"
+					class="url-input"
+					value="{{ shortUrl }}"
+					required
+					disabled
+				/>
+				<button type="button" class="copy-btn" onclick="copyToClipboard()">
+					Copy
+				</button>
+			</div>
+
+			<script>
+				function copyToClipboard() {
+					const urlInput = document.getElementById("shortUrl");
+					navigator.clipboard
+						.writeText(urlInput.value)
+						.then(() => {
+							alert("URL copied to clipboard!");
+						})
+						.catch((err) => {
+							console.error("Could not copy text: ", err);
+						});
+				}
+			</script>
+
+			<style>
+				.input-group {
+					position: relative;
+					display: flex;
+					align-items: center;
+				}
+
+				.url-input {
+					flex: 1;
+					border-radius: 5px 0 0 5px !important;
+				}
+
+				.copy-btn {
+					background-color: var(--primary);
+					color: white;
+					border: none;
+					border-radius: 0 5px 5px 0;
+					padding: 10px 15px;
+					cursor: pointer;
+					transition: background-color 0.3s;
+				}
+
+				.copy-btn:hover {
+					background-color: var(--secondary);
+				}
+			</style>
+		</div>
+	</body>
+</html>
