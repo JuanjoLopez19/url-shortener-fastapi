@@ -1,4 +1,3 @@
-import logging
 import random
 
 from src.app.database.schemas.url import UrlSchema
@@ -24,5 +23,5 @@ async def shorten_url_controller(data: str, base_url: str) -> EndpointResponse:
             error=None,
         )
     except Exception as e:
-        logging.error(f"Error al acortar URL: {str(e)}")
+        print(e)
         return EndpointResponse(success=False, url=None, error=str(e))

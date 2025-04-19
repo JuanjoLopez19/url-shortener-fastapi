@@ -23,38 +23,54 @@ async def read_root(
 
 @router.get("/{token}")
 async def get_url(request: Request, token: str):
-    if not token:
+    try:
+        if not token:
+            return templates.TemplateResponse(
+                "error.html",
+                context={
+                    "request": request,
+                    "message": "Token not found",
+                    "error": {
+                        "status": 400,
+                        "stack": json.dumps({"message": "Token not found"}),
+                    },
+                },
+            )
+
+        url_doc = await UrlSchema.find_one(UrlSchema.shortened == token)
+
+        if not url_doc:
+            return templates.TemplateResponse(
+                "error.html",
+                context={
+                    "request": request,
+                    "message": "URL no encontrada",
+                    "error": {
+                        "status": 404,
+                        "stack": json.dumps(
+                            {
+                                "message": f"No se encontró ninguna URL con el token: {token}"
+                            }
+                        ),
+                    },
+                },
+            )
+
+        url_doc.access_count += 1
+        url_doc.last_accessed = date.today()
+        await url_doc.save()
+
+        return RedirectResponse(url=url_doc.original)
+    except Exception as e:
+        print(e)
         return templates.TemplateResponse(
             "error.html",
             context={
                 "request": request,
-                "message": "Token not found",
+                "message": "Error interno del servidor",
                 "error": {
-                    "status": 400,
-                    "stack": json.dumps({"message": "Token not found"}),
+                    "status": 500,
+                    "stack": json.dumps({"message": str(e)}),
                 },
             },
         )
-
-    url_doc = await UrlSchema.find_one(UrlSchema.shortened == token)
-
-    if not url_doc:
-        return templates.TemplateResponse(
-            "error.html",
-            context={
-                "request": request,
-                "message": "URL no encontrada",
-                "error": {
-                    "status": 404,
-                    "stack": json.dumps(
-                        {"message": f"No se encontró ninguna URL con el token: {token}"}
-                    ),
-                },
-            },
-        )
-
-    url_doc.access_count += 1
-    url_doc.last_accessed = date.today()
-    await url_doc.save()
-
-    return RedirectResponse(url=url_doc.original)

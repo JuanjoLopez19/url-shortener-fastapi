@@ -45,6 +45,8 @@ async def shorten_url(request: Request, url: Annotated[str, Form()]):
                 },
             )
     except Exception as e:
+        print(e)
+
         return templates.TemplateResponse(
             "error.html",
             {
