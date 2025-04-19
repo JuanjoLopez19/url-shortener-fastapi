@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 	<head>
 		<title>{{ title }}</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -76,155 +76,300 @@
 			rel="manifest"
 			href="{{ url_for('static', path='/icons/manifest.json') }}"
 		/>
-		<meta name="msapplication-TileColor" content="#ffffff" />
+		<meta name="msapplication-TileColor" content="#4361ee" />
 		<meta
 			name="msapplication-TileImage"
 			content="{{ url_for('static', path='/icons/ms-icon-144x144.png') }}"
 		/>
+		<meta name="theme-color" content="#4361ee" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 		<style>
 			:root {
 				--primary: #4361ee;
+				--primary-light: #6c8fff;
+				--primary-dark: #3040bd;
 				--secondary: #3f37c9;
+				--accent: #f72585;
 				--light: #f8f9fa;
 				--dark: #212529;
+				--gray: #e0e0e0;
+				--success: #06d6a0;
+				--gradient: linear-gradient(135deg, var(--primary), var(--accent));
+			}
+
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
 			}
 
 			body {
-				font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-				background-color: #f0f2f5;
+				font-family: "Poppins", sans-serif;
+				background: #f0f2f5;
+				background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
 				display: flex;
 				justify-content: center;
 				align-items: center;
 				min-height: 100vh;
 				margin: 0;
 				padding: 20px;
+				color: var(--dark);
 			}
 
 			.container {
 				background-color: white;
-				border-radius: 10px;
-				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-				padding: 30px;
+				border-radius: 16px;
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+				padding: 40px;
 				width: 100%;
-				max-width: 500px;
+				max-width: 550px;
 				text-align: center;
+				position: relative;
+				overflow: hidden;
+			}
+
+			.logo {
+				width: 100px;
+				margin-bottom: 20px;
+				animation: pulse 2s infinite alternate ease-in-out;
+			}
+
+			.container::before {
+				content: "";
+				position: absolute;
+				top: -20px;
+				left: -20px;
+				width: 120px;
+				height: 120px;
+				background: var(--gradient);
+				border-radius: 50%;
+				opacity: 0.1;
+				z-index: 0;
+			}
+
+			.container::after {
+				content: "";
+				position: absolute;
+				bottom: -50px;
+				right: -50px;
+				width: 200px;
+				height: 200px;
+				background: var(--gradient);
+				border-radius: 50%;
+				opacity: 0.1;
+				z-index: 0;
 			}
 
 			h1 {
-				color: var(--dark);
-				margin-bottom: 20px;
+				color: var(--primary);
+				margin-bottom: 12px;
+				font-weight: 600;
+				position: relative;
+				z-index: 1;
 			}
 
-			.url-form {
-				margin-top: 30px;
+			p {
+				color: #666;
+				margin-bottom: 30px;
+				font-size: 1.1rem;
+			}
+
+			.url-box {
+				margin: 25px 0;
+				position: relative;
+				z-index: 1;
+			}
+
+			.url-label {
+				display: block;
+				text-align: left;
+				margin-bottom: 8px;
+				color: #555;
+				font-size: 0.9rem;
+				font-weight: 500;
 			}
 
 			.input-group {
 				position: relative;
-				margin-bottom: 25px;
+				display: flex;
+				align-items: center;
+				margin-bottom: 20px;
 			}
 
 			.url-input {
-				width: 90%;
-				padding: 10px;
-				border: 2px solid #e0e0e0;
-				border-radius: 5px;
+				flex: 1;
+				padding: 16px 20px;
+				border: 2px solid var(--gray);
+				border-radius: 12px 0 0 12px;
 				font-size: 16px;
-				transition: border-color 0.3s;
+				transition: all 0.3s ease;
+				background-color: #f8f9faaa;
+				color: #555;
+				font-family: "Poppins", sans-serif;
 			}
 
-			.url-input:focus {
-				outline: none;
-				border-color: var(--primary);
+			.short-url {
+				flex: 1;
+				padding: 16px 20px;
+				border: 2px solid var(--primary-light);
+				border-radius: 12px 0 0 12px;
+				font-size: 16px;
+				background-color: #f0f7ff;
+				color: var(--primary-dark);
+				font-weight: 500;
+				font-family: "Poppins", sans-serif;
 			}
 
-			.submit-btn {
-				background-color: var(--primary);
+			.copy-btn {
+				background: var(--gradient);
 				color: white;
 				border: none;
-				border-radius: 5px;
-				margin: 12px 25px;
+				border-radius: 0 12px 12px 0;
+				padding: 16px 25px;
 				font-size: 16px;
+				font-weight: 500;
 				cursor: pointer;
-				transition: background-color 0.3s;
+				transition: all 0.3s ease;
+				box-shadow: 0 4px 15px rgba(67, 97, 238, 0.2);
+				font-family: "Poppins", sans-serif;
 			}
 
-			.submit-btn:hover {
-				background-color: var(--secondary);
+			.copy-btn:hover {
+				background: linear-gradient(135deg, var(--primary-dark), var(--accent));
+				box-shadow: 0 6px 20px rgba(67, 97, 238, 0.3);
+			}
+
+			.copy-btn:active {
+				transform: translateY(1px);
+			}
+
+			.back-btn {
+				display: inline-block;
+				background: transparent;
+				color: var(--primary);
+				border: 2px solid var(--primary);
+				border-radius: 12px;
+				padding: 12px 25px;
+				font-size: 16px;
+				font-weight: 500;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				margin-top: 10px;
+				text-decoration: none;
+				font-family: "Poppins", sans-serif;
+			}
+
+			.back-btn:hover {
+				background-color: rgba(67, 97, 238, 0.1);
+				transform: translateY(-2px);
+			}
+
+			.success-message {
+				position: fixed;
+				top: 20px;
+				left: 50%;
+				transform: translateX(-50%) translateY(-100px);
+				background: var(--success);
+				color: white;
+				padding: 15px 25px;
+				border-radius: 50px;
+				font-weight: 500;
+				box-shadow: 0 4px 15px rgba(6, 214, 160, 0.3);
+				transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+				z-index: 1000;
+				opacity: 0;
+			}
+
+			.success-message.show {
+				transform: translateX(-50%) translateY(0);
+				opacity: 1;
+			}
+
+			@keyframes pulse {
+				0% {
+					transform: scale(1);
+				}
+				100% {
+					transform: scale(1.05);
+				}
+			}
+
+			@media (max-width: 600px) {
+				.container {
+					padding: 30px 20px;
+				}
 			}
 		</style>
 	</head>
 	<body>
 		<div class="container">
+			<img
+				src="{{ url_for('static', path='/logo.webp') }}"
+				alt="Logo"
+				class="logo"
+			/>
 			<h1>{{ title }}</h1>
-			<p>This is your URL Shortened</p>
+			<p>¡Tu URL ha sido acortada con éxito!</p>
 
-			<div class="input-group">
-				<input
-					type="url"
-					name="longUrl"
-					class="url-input"
-					value="{{ longUrl }}"
-					required
-					disabled
-				/>
+			<div class="url-box">
+				<label class="url-label">URL original:</label>
+				<div class="input-group">
+					<input
+						type="url"
+						name="longUrl"
+						class="url-input"
+						value="{{ longUrl }}"
+						readonly
+					/>
+				</div>
+
+				<label class="url-label">URL acortada:</label>
+				<div class="input-group">
+					<input
+						type="url"
+						name="shortUrl"
+						id="shortUrl"
+						class="short-url"
+						value="{{ shortUrl }}"
+						readonly
+					/>
+					<button type="button" class="copy-btn" onclick="copyToClipboard()">
+						Copiar
+					</button>
+				</div>
 			</div>
 
-			<div class="input-group">
-				<input
-					type="url"
-					name="shortUrl"
-					id="shortUrl"
-					class="url-input"
-					value="{{ shortUrl }}"
-					required
-					disabled
-				/>
-				<button type="button" class="copy-btn" onclick="copyToClipboard()">
-					Copy
-				</button>
-			</div>
-
-			<script>
-				function copyToClipboard() {
-					const urlInput = document.getElementById("shortUrl");
-					navigator.clipboard
-						.writeText(urlInput.value)
-						.then(() => {
-							alert("URL copied to clipboard!");
-						})
-						.catch((err) => {
-							console.error("Could not copy text: ", err);
-						});
-				}
-			</script>
-
-			<style>
-				.input-group {
-					position: relative;
-					display: flex;
-					align-items: center;
-				}
-
-				.url-input {
-					flex: 1;
-					border-radius: 5px 0 0 5px !important;
-				}
-
-				.copy-btn {
-					background-color: var(--primary);
-					color: white;
-					border: none;
-					border-radius: 0 5px 5px 0;
-					padding: 10px 15px;
-					cursor: pointer;
-					transition: background-color 0.3s;
-				}
-
-				.copy-btn:hover {
-					background-color: var(--secondary);
-				}
-			</style>
+			<a href="/" class="back-btn">Acortar otra URL</a>
 		</div>
+
+		<div id="successMessage" class="success-message">
+			¡URL copiada al portapapeles!
+		</div>
+
+		<script>
+			function copyToClipboard() {
+				const urlInput = document.getElementById("shortUrl");
+				navigator.clipboard
+					.writeText(urlInput.value)
+					.then(() => {
+						showSuccessMessage();
+					})
+					.catch((err) => {
+						console.error("No se pudo copiar el texto: ", err);
+					});
+			}
+
+			function showSuccessMessage() {
+				const message = document.getElementById("successMessage");
+				message.classList.add("show");
+
+				setTimeout(() => {
+					message.classList.remove("show");
+				}, 3000);
+			}
+		</script>
 	</body>
 </html>

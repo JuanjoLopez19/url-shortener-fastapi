@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -77,62 +77,183 @@
 			rel="manifest"
 			href="{{ url_for('static', path='/icons/manifest.json') }}"
 		/>
-		<meta name="msapplication-TileColor" content="#ffffff" />
+		<meta name="msapplication-TileColor" content="#4361ee" />
 		<meta
 			name="msapplication-TileImage"
 			content="{{ url_for('static', path='/icons/ms-icon-144x144.png') }}"
 		/>
+		<meta name="theme-color" content="#4361ee" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
 		<style>
+			:root {
+				--primary: #4361ee;
+				--primary-light: #6c8fff;
+				--primary-dark: #3040bd;
+				--secondary: #3f37c9;
+				--accent: #f72585;
+				--light: #f8f9fa;
+				--dark: #212529;
+				--error: #e63946;
+				--gray: #e0e0e0;
+				--gradient: linear-gradient(135deg, var(--primary), var(--accent));
+				--error-gradient: linear-gradient(135deg, var(--error), #ff758f);
+			}
+
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+
 			body {
-				font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-					sans-serif;
-				line-height: 1.6;
-				color: #333;
-				max-width: 800px;
-				margin: 40px auto;
+				font-family: "Poppins", sans-serif;
+				background: #f0f2f5;
+				background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: 100vh;
+				margin: 0;
 				padding: 20px;
-				background-color: #f8f9fa;
+				color: var(--dark);
 			}
+
+			.container {
+				background-color: white;
+				border-radius: 16px;
+				box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+				padding: 40px;
+				width: 100%;
+				max-width: 700px;
+				position: relative;
+				overflow: hidden;
+			}
+
+			.logo {
+				width: 80px;
+				margin-bottom: 20px;
+				filter: grayscale(30%);
+				opacity: 0.9;
+			}
+
+			.container::before {
+				content: "";
+				position: absolute;
+				top: -20px;
+				left: -20px;
+				width: 120px;
+				height: 120px;
+				background: var(--error-gradient);
+				border-radius: 50%;
+				opacity: 0.1;
+				z-index: 0;
+			}
+
+			.container::after {
+				content: "";
+				position: absolute;
+				bottom: -50px;
+				right: -50px;
+				width: 200px;
+				height: 200px;
+				background: var(--error-gradient);
+				border-radius: 50%;
+				opacity: 0.1;
+				z-index: 0;
+			}
+
 			h1 {
-				color: #e74c3c;
-				border-bottom: 1px solid #eee;
-				padding-bottom: 10px;
+				color: var(--error);
+				margin-bottom: 12px;
+				font-weight: 600;
+				position: relative;
+				z-index: 1;
 			}
+
 			h2 {
-				color: #7f8c8d;
+				color: #666;
 				font-size: 1.2em;
+				margin-bottom: 20px;
+				font-weight: 500;
+				position: relative;
+				z-index: 1;
 			}
-			.error-container {
-				background: white;
-				border-radius: 5px;
-				padding: 20px;
-				box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+			h3 {
+				color: #555;
+				font-size: 1em;
+				margin: 20px 0 10px;
+				font-weight: 500;
+				position: relative;
+				z-index: 1;
 			}
+
 			pre {
-				background-color: #f1f1f1;
-				padding: 15px;
-				border-radius: 4px;
+				background-color: #f8f9fa;
+				padding: 20px;
+				border-radius: 12px;
 				overflow-x: auto;
-				font-family: Consolas, monospace;
+				font-family: "Consolas", monospace;
 				font-size: 14px;
+				border: 1px solid #e0e0e0;
+				margin-top: 15px;
+				position: relative;
+				z-index: 1;
+				max-height: 400px;
+				box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.05);
+			}
+
+			.back-btn {
+				display: inline-block;
+				background: transparent;
+				color: var(--primary);
+				border: 2px solid var(--primary);
+				border-radius: 12px;
+				padding: 12px 25px;
+				font-size: 16px;
+				font-weight: 500;
+				cursor: pointer;
+				transition: all 0.3s ease;
+				margin-top: 25px;
+				text-decoration: none;
+				font-family: "Poppins", sans-serif;
+			}
+
+			.back-btn:hover {
+				background-color: rgba(67, 97, 238, 0.1);
+				transform: translateY(-2px);
+			}
+
+			@media (max-width: 600px) {
+				.container {
+					padding: 30px 20px;
+				}
 			}
 		</style>
 	</head>
 	<body>
-		<div class="error-container">
+		<div class="container">
+			<img
+				src="{{ url_for('static', path='/logo.webp') }}"
+				alt="Logo"
+				class="logo"
+			/>
 			<h1>{{ message }}</h1>
-			<h2>Status: {{ error.status }}</h2>
+			<h2>Estado: {{ error.status }}</h2>
 
-			{% set isJson = false %} {% set jsonData = none %} {% if error.stack and
-			error.stack is string %} {% try %} {% set jsonData = error.stack|from_json
-			%} {% set isJson = true %} {% except %} {% set isJson = false %} {% endtry
-			%} {% endif %} {% if isJson %}
-			<h3>Error Details (JSON):</h3>
-			<pre>{{ jsonData|tojson(indent=2) }}</pre>
-			{% else %}
-			<h3>Stack Trace:</h3>
+			{% if error.stack and error.stack is string %} {% if error.stack|tojson is
+			defined and error.stack[0:1] == '{' %}
+			<h3>Detalles del error (JSON):</h3>
 			<pre>{{ error.stack }}</pre>
-			{% endif %}
+			{% else %}
+			<h3>Traza del error:</h3>
+			<pre>{{ error.stack }}</pre>
+			{% endif %} {% endif %}
+
+			<a href="/" class="back-btn">Volver a inicio</a>
 		</div>
 	</body>
 </html>
