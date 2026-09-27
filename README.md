@@ -1,131 +1,84 @@
-# URL Shortener with FastAPI
+<div align="center">
+  <img src="src/static/logo.webp" alt="" width="72" height="72" />
+  <h1>URL Shortener</h1>
+  <p><strong>Enlaces cortos. Compartir sin fricción.</strong></p>
+  <p>Convierte una URL larga en un enlace breve, listo para copiar y compartir.</p>
+</div>
 
-A modern URL shortening service built with FastAPI, MongoDB, and Jinja2 templates.
+## Acorta, copia y comparte
 
-![URL Shortener](src/static/logo.webp)
+URL Shortener hace que compartir direcciones largas sea más sencillo. Pega la URL de destino, crea un enlace compacto y cópialo con un clic. Cuando alguien lo abre, llega directamente a la página original.
 
-## Features
+La interfaz está diseñada para funcionar bien en móvil y escritorio, e incluye temas claro y oscuro con preferencia guardada en el navegador.
 
-- ✂️ Shorten long URLs to easy-to-share links
-- 📊 Track access counts and last accessed date
-- 🚀 Fast and responsive API
-- 🎨 Clean and modern UI
-- 📱 Mobile-friendly design
-- 🔄 Serverless-ready for Vercel deployment
+## Una experiencia directa
 
-## Tech Stack
+1. **Pega** una dirección web completa que empiece por `http://` o `https://`.
+2. **Acórtala** y obtén un enlace listo para compartir.
+3. **Cópialo** con un clic. Al abrirlo, se redirige a la URL original.
 
-- **Backend**: FastAPI
-- **Database**: MongoDB with Beanie ODM
-- **Frontend**: Jinja2 Templates, HTML, CSS, JavaScript
-- **Deployment**: Vercel-ready
+Los enlaces se guardan en MongoDB. En cada redirección, el servicio actualiza el contador de accesos y la fecha del último acceso.
 
-## Prerequisites
+## Pruébalo en local
 
-- Python 3.13+
-- MongoDB database (e.g., MongoDB Atlas)
+Necesitas Python 3.13 o posterior, [UV](https://docs.astral.sh/uv/) y una base de datos MongoDB accesible desde tu entorno.
 
-## Installation
-
-1. Clone the repository:
+1. Clona el repositorio e instala las dependencias:
 
    ```bash
-   git clone https://github.com/yourusername/url-shortener-fastapi.git
+   git clone https://github.com/JuanjoLopez19/url-shortener-fastapi.git
    cd url-shortener-fastapi
+   uv sync
    ```
 
-2. Create a virtual environment:
+2. Crea `src/.env` con las credenciales de MongoDB:
 
-   ```bash
-   python -m venv .venv
-   ```
-
-3. Activate the virtual environment:
-
-   - Windows:
-     ```bash
-     .venv\Scripts\activate
-     ```
-   - macOS/Linux:
-     ```bash
-     source .venv/bin/activate
-     ```
-
-4. Install dependencies:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-5. Create a `.env` file in the `src` directory with the following content:
-   ```
-   DATABASE_USER=your_mongodb_username
-   DATABASE_PASSWORD=your_mongodb_password
-   DATABASE_NAME=your_database_name
-   DATABASE_HOST=your_mongodb_host
+   ```dotenv
+   DATABASE_USER=tu_usuario
+   DATABASE_PASSWORD=tu_contraseña
+   DATABASE_NAME=url_shortener
+   DATABASE_HOST=tu_cluster.mongodb.net
    DATABASE_PORT=27017
    DEVELOPMENT=True
    ```
 
-## Running Locally
-
-Start the development server:
-
-```bash
-python main.py
-```
-
-The application will be available at http://localhost:8000
-
-## Usage
-
-1. Open your browser and navigate to http://localhost:8000
-2. Enter a URL you want to shorten
-3. Click "¡Acortar URL!"
-4. Copy your shortened URL to share
-
-## API Endpoints
-
-- `GET /` - Main page
-- `POST /api/v1/shorten` - Shorten a URL
-- `GET /{token}` - Redirect to the original URL
-
-## Deployment to Vercel
-
-This project is configured for deployment on Vercel:
-
-1. Install Vercel CLI:
+3. Inicia la aplicación:
 
    ```bash
-   npm install -g vercel
+   uv run python main.py
    ```
 
-2. Deploy to Vercel:
-   ```bash
-   vercel
-   ```
+   Abre [http://localhost:8000](http://localhost:8000).
 
-## Project Structure
+## Despliegue
 
-```
-├── main.py              # Application entry point
-├── requirements.txt     # Python dependencies
-├── pyproject.toml       # Project metadata
-├── vercel.json          # Vercel configuration
-└── src/
-    ├── app/             # Application code
-    │   ├── api/         # API routes and controllers
-    │   ├── database/    # Database models and connection
-    │   └── shared/      # Shared utilities and constants
-    └── static/          # Static assets
-        ├── icons/       # App icons
-        └── templates/   # HTML templates
-```
+El repositorio incluye configuración para Vercel. Importa el proyecto y define estas variables de entorno en la configuración del despliegue:
 
-## License
+| Variable            | Descripción                                               |
+| ------------------- | --------------------------------------------------------- |
+| `DATABASE_USER`     | Usuario de MongoDB                                        |
+| `DATABASE_PASSWORD` | Contraseña de MongoDB                                     |
+| `DATABASE_NAME`     | Nombre de la base de datos                                |
+| `DATABASE_HOST`     | Host del clúster MongoDB                                  |
+| `DATABASE_PORT`     | Valor requerido por la configuración; normalmente `27017` |
 
-[MIT](https://choosealicense.com/licenses/mit/)
+Comprueba también que el clúster permita conexiones desde el entorno de despliegue. La aplicación detecta el entorno serverless de Vercel mediante `VERCEL=1`.
 
-## Author
+## Rutas disponibles
 
-[JuanjoLopez19](https://github.com/JuanjoLopez19) - [Portfolio](https://juanjolopez19.github.io)
+| Ruta                   | Comportamiento                                                                  |
+| ---------------------- | ------------------------------------------------------------------------------- |
+| `GET /`                | Muestra el formulario para acortar una URL.                                     |
+| `POST /api/v1/shorten` | Recibe el campo de formulario `url` y muestra la página con el enlace generado. |
+| `GET /{token}`         | Redirige al destino asociado al token y actualiza sus datos de acceso.          |
+
+## Tecnologías
+
+- **Aplicación:** FastAPI y Python.
+- **Persistencia:** MongoDB con Beanie.
+- **Interfaz:** plantillas Jinja2, HTML, CSS y JavaScript.
+- **Despliegue:** Vercel.
+
+## Contacto
+
+Creado por [Juanjo López](https://portfolio.jjlopez.dev). Para consultas: [contact@jjlopez.dev](mailto:contact@jjlopez.dev).
