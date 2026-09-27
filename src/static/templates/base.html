@@ -4,7 +4,29 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="theme-color" content="#fdfcfc" />
-		<title>{% block title %}URL Shortener{% endblock %}</title>
+		<title>{% block title %}URL Shortener — Acorta y comparte enlaces{% endblock %}</title>
+		<meta name="description" content="{% block meta_description %}Acorta enlaces largos y compártelos con facilidad. Una herramienta sencilla, rápida y adaptada a móvil y escritorio.{% endblock %}" />
+		<meta name="robots" content="{% block meta_robots %}index,follow{% endblock %}" />
+		{% block canonical %}{% endblock %}
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="URL Shortener" />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:title" content="{% block og_title %}URL Shortener — Acorta y comparte enlaces{% endblock %}" />
+		<meta property="og:description" content="{% block og_description %}Acorta enlaces largos y compártelos con facilidad. Una herramienta sencilla, rápida y adaptada a móvil y escritorio.{% endblock %}" />
+		<meta property="og:url" content="{% block og_url %}{{ request.url_for('read_root') }}{% endblock %}" />
+		<meta property="og:image" content="{{ request.url_for('static', path='/og-image.png') }}" />
+		<meta property="og:image:type" content="image/png" />
+		<meta property="og:image:width" content="1069" />
+		<meta property="og:image:height" content="958" />
+		<meta property="og:image:alt" content="URL Shortener en modo oscuro, con el formulario para acortar enlaces." />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content="{% block twitter_title %}URL Shortener — Acorta y comparte enlaces{% endblock %}" />
+		<meta name="twitter:description" content="{% block twitter_description %}Acorta enlaces largos y compártelos con facilidad.{% endblock %}" />
+		<meta name="twitter:image" content="{{ request.url_for('static', path='/og-image.png') }}" />
+		<meta name="twitter:image:alt" content="URL Shortener en modo oscuro, con el formulario para acortar enlaces." />
+		<link rel="icon" type="image/x-icon" href="{{ url_for('static', path='/favicon.ico') }}" />
+		<link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', path='/favicon-32.png') }}" />
+		<link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', path='/apple-touch-icon.png') }}" />
 		<script>
 			(() => {
 				try {

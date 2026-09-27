@@ -1,5 +1,11 @@
 {% extends "base.html" %}
-{% block title %}URL Shortener — Acorta enlaces{% endblock %}
+{% block title %}Acorta enlaces largos y compártelos | URL Shortener{% endblock %}
+{% block meta_description %}Convierte una dirección web larga en un enlace corto, listo para copiar y compartir. Acorta enlaces fácilmente desde móvil o escritorio.{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ request.url_for('read_root') }}" />{% endblock %}
+{% block og_title %}Acorta enlaces largos y compártelos | URL Shortener{% endblock %}
+{% block og_description %}Convierte una dirección web larga en un enlace corto, listo para copiar y compartir.{% endblock %}
+{% block twitter_title %}Acorta enlaces largos y compártelos | URL Shortener{% endblock %}
+{% block twitter_description %}Convierte una dirección web larga en un enlace corto, listo para copiar y compartir.{% endblock %}
 {% block content %}
 <section class="page" aria-labelledby="page-title">
 	<p class="eyebrow">[ LINK TOOL / 001 ]</p>

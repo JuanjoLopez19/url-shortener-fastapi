@@ -1,5 +1,11 @@
 {% extends "base.html" %}
-{% block title %}Error {{ error.status }} — URL Shortener{% endblock %}
+{% block title %}Error {{ error.status }} | URL Shortener{% endblock %}
+{% block meta_description %}No se pudo completar la operación. Vuelve al inicio para acortar un enlace.{% endblock %}
+{% block meta_robots %}noindex,nofollow{% endblock %}
+{% block og_title %}Error {{ error.status }} | URL Shortener{% endblock %}
+{% block og_description %}No se pudo completar la operación. Vuelve al inicio para acortar un enlace.{% endblock %}
+{% block twitter_title %}Error {{ error.status }} | URL Shortener{% endblock %}
+{% block twitter_description %}No se pudo completar la operación. Vuelve al inicio para acortar un enlace.{% endblock %}
 {% block content %}
 <section class="page" aria-labelledby="page-title">
 	<p class="eyebrow">[ LINK TOOL / ERROR ]</p>
