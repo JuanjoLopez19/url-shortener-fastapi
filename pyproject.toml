@@ -1,11 +1,9 @@
 [project]
-name = "url-shortener-fastapi"
-version = "0.1.0"
-description = "Add your description here"
+name = "url-shortener"
+version = "1.0.0"
+description = "A simple URL shortener built with FastAPI and Beanie."
 readme = "README.md"
-authors = [
-    { name = "Juanjo López", email = "juanjoselopez@usal.es" }
-]
+authors = [{ name = "Juanjo López", email = "contact@jjlopez.dev" }]
 requires-python = ">=3.13"
 dependencies = [
     "beanie[srv]>=1.29.0",

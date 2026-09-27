@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta name="theme-color" content="#fdfcfc" />
+		<title>{% block title %}URL Shortener{% endblock %}</title>
+		<script>
+			(() => {
+				try {
+					if (localStorage.getItem("url-shortener-theme") === "dark") {
+						document.documentElement.dataset.theme = "dark";
+						document.querySelector('meta[name="theme-color"]').content = "#201d1d";
+					}
+				} catch {}
+			})();
+		</script>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+		<link rel="stylesheet" href="{{ url_for('static', path='/styles.css') }}" />
+		{% block head %}{% endblock %}
+	</head>
+	<body>
+		<div class="site-shell">
+			<header class="site-header">
+				<a class="wordmark" href="/" aria-label="URL Shortener, inicio">
+					<img class="brand-icon" src="{{ url_for('static', path='/logo.webp') }}" alt="" width="24" height="24" />
+					<span>[ URL/ ]</span>
+				</a>
+				<span class="header-note">LINK UTILITY <span aria-hidden="true">/</span> V1</span>
+				<button class="theme-toggle" type="button" data-theme-toggle aria-label="Tema claro; cambiar a modo oscuro" aria-pressed="false">
+					<span aria-hidden="true">[◐]</span>
+					<span data-theme-label>CLARO</span>
+				</button>
+			</header>
+			<main>{% block content %}{% endblock %}</main>
+			<footer class="site-footer">
+				<span>© URL SHORTENER</span>
+				<span class="footer-links">
+					<a href="https://github.com/JuanjoLopez19/url-shortener-fastapi" target="_blank" rel="noreferrer">Repo</a>
+					<a href="https://portfolio.jjlopez.dev?utm_source=url_shortener" target="_blank" rel="noreferrer">Juanjo López</a>
+				</span>
+			</footer>
+		</div>
+		<script>
+			(() => {
+				const toggle = document.querySelector("[data-theme-toggle]");
+				const label = document.querySelector("[data-theme-label]");
+				const themeColor = document.querySelector('meta[name="theme-color"]');
+				if (!toggle || !label) return;
+
+				const applyTheme = (theme) => {
+					const isDark = theme === "dark";
+					document.documentElement.dataset.theme = isDark ? "dark" : "light";
+					toggle.setAttribute("aria-pressed", String(isDark));
+					label.textContent = isDark ? "OSCURO" : "CLARO";
+					toggle.setAttribute("aria-label", `Tema ${isDark ? "oscuro" : "claro"}; cambiar a modo ${isDark ? "claro" : "oscuro"}`);
+					if (themeColor) themeColor.content = isDark ? "#201d1d" : "#fdfcfc";
+				};
+
+				applyTheme(document.documentElement.dataset.theme === "dark" ? "dark" : "light");
+				toggle.addEventListener("click", () => {
+					const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+					applyTheme(nextTheme);
+					try {
+						localStorage.setItem("url-shortener-theme", nextTheme);
+					} catch {}
+				});
+			})();
+		</script>
+	</body>
+</html>
